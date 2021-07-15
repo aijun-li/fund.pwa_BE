@@ -6,3 +6,7 @@ export function urlWithQuery(url, query) {
   )
   return `${url}?${queryString}`
 }
+
+export function extractJSONP(jsonp) {
+  return JSON.parse(jsonp.match(/^.*?\((.*)\);?$/)[1])
+}

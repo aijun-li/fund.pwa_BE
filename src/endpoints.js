@@ -9,5 +9,8 @@ export default {
         key: keyword
       }
     )
+  },
+  estimated(code) {
+    return `http://fundgz.1234567.com.cn/js/${code}.js`
   }
 }
