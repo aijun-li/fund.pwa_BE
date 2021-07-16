@@ -40,12 +40,38 @@ app.get('/estimated', async ({ query: { codes } }, res) => {
   const results = responses.map((response) => extractJSONP(response.data))
 
   res.send(
-    results.map(({ fundcode, name, gsz, gszzl, gztime }) => ({
+    results.map(({ fundcode, gsz, gszzl, gztime }) => ({
       code: fundcode,
-      name: name,
       est: gsz,
       rate: `${gszzl > 0 ? '+' : ''}${gszzl}`,
       time: dayjs.tz(gztime, 'YYYY-MM-DD HH:mm', config.zone).valueOf()
+    }))
+  )
+})
+
+// net value of fund
+app.get('/net', async ({ query: { codes } }, res) => {
+  codes = codes.split(',')
+
+  const responses = await Promise.all(
+    codes.map((code) =>
+      axios.get(endpoints.net(code, 1, 1), {
+        headers: {
+          referer: 'https://fund.eastmoney.com'
+        }
+      })
+    )
+  )
+  const results = responses.map((response, index) =>
+    Object.assign(response.data.Data.LSJZList[0], { CODE: codes[index] })
+  )
+
+  res.send(
+    results.map(({ FSRQ, DWJZ, CODE, JZZZL }) => ({
+      code: CODE,
+      net: DWJZ,
+      rate: `${JZZZL > 0 ? '+' : ''}${JZZZL}`,
+      time: dayjs.tz(FSRQ, 'YYYY-MM-DD', config.zone).valueOf()
     }))
   )
 })
