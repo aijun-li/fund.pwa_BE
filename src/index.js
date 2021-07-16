@@ -44,7 +44,7 @@ app.get('/estimated', async ({ query: { codes } }, res) => {
       code: fundcode,
       name: name,
       est: gsz,
-      rate: `${gszzl > 0 ? '+' : '-'}${gszzl}`,
+      rate: `${gszzl > 0 ? '+' : ''}${gszzl}`,
       time: dayjs.tz(gztime, 'YYYY-MM-DD HH:mm', config.zone).valueOf()
     }))
   )
