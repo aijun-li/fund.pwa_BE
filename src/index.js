@@ -16,7 +16,7 @@ dayjs.extend(customParseFormat)
 dayjs.tz.setDefault('Asia/Shanghai')
 
 // fund search suggestions
-app.get('/suggestions/:keyword', async ({ params: { keyword } }, res) => {
+app.get('/suggestions', async ({ query: { keyword } }, res) => {
   const {
     data: { Datas: data }
   } = await axios.get(endpoints.suggestions(keyword))
