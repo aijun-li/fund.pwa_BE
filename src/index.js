@@ -4,6 +4,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat.js'
 import timezone from 'dayjs/plugin/timeZone.js'
 import utc from 'dayjs/plugin/utc.js'
 import express from 'express'
+import parseDetail from './commonjs/parseDetail.cjs'
 import config from './config.js'
 import endpoints from './endpoints.js'
 import { extractJSONP } from './utils.js'
@@ -74,6 +75,13 @@ app.get('/net', async ({ query: { codes } }, res) => {
       time: dayjs.tz(FSRQ, 'YYYY-MM-DD', config.zone).valueOf()
     }))
   )
+})
+
+// fund detail
+app.get('/detail/:code', async ({ params: { code } }, res) => {
+  const { data } = await axios.get(endpoints.detail(code))
+
+  res.send(parseDetail(data))
 })
 
 app.listen(config.port, () => {

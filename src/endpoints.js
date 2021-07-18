@@ -19,5 +19,8 @@ export default {
       pageIndex,
       pageSize
     })
+  },
+  detail(code) {
+    return `http://fund.eastmoney.com/pingzhongdata/${code}.js`
   }
 }
