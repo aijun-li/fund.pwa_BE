@@ -44,11 +44,12 @@ app.get('/estimated', async ({ query: { codes } }, res) => {
   const results = responses.map((response) => extractJSONP(response.data))
 
   res.send(
-    results.map(({ fundcode, gsz, gszzl, gztime }) => ({
+    results.map(({ fundcode, name, gsz, gszzl, gztime }) => ({
       code: fundcode,
+      name,
       est: gsz,
-      rate: `${gszzl > 0 ? '+' : ''}${gszzl}`,
-      time: dayjs.tz(gztime, 'YYYY-MM-DD HH:mm', config.zone).valueOf()
+      estRate: `${gszzl > 0 ? '+' : ''}${gszzl}`,
+      estTime: dayjs.tz(gztime, 'YYYY-MM-DD HH:mm', config.zone).valueOf()
     }))
   )
 })
@@ -74,8 +75,8 @@ app.get('/net', async ({ query: { codes } }, res) => {
     results.map(({ FSRQ, DWJZ, CODE, JZZZL }) => ({
       code: CODE,
       net: DWJZ,
-      rate: `${JZZZL > 0 ? '+' : ''}${JZZZL}`,
-      time: dayjs.tz(FSRQ, 'YYYY-MM-DD', config.zone).valueOf()
+      netRate: `${JZZZL > 0 ? '+' : ''}${JZZZL}`,
+      netTime: dayjs.tz(FSRQ, 'YYYY-MM-DD', config.zone).valueOf()
     }))
   )
 })
