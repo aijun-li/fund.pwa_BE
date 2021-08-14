@@ -6,6 +6,7 @@ const app = express()
 
 app.use('/fund', fundRouter)
 
-app.listen(config.port, () => {
-  console.log(`Express listening at port ${config.port}`)
+const port = process.env.FUND_PORT || config.port
+app.listen(port, () => {
+  console.log(`Express listening at port ${port}`)
 })
